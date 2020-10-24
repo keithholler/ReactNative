@@ -13,8 +13,6 @@ class Contact extends Component {
   };
 
   render() {
-
-   
     return (
       <ScrollView>
         <Card wrapperStyle={{ margin: 20 }} title="Contact Information">
