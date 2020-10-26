@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { FlatList, View, Text } from "react-native";
+import { FlatList, View, Text, StyleSheet } from "react-native";
+import { SwipeRow } from "react-native-swipe-list-view";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { deleteFavorite } from "../redux/ActionCreators";
 import { ListItem } from "react-native-elements";
 import { connect } from "react-redux";
 import { Loading } from "./LoadingComponent";
@@ -12,25 +15,40 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = {
+  deleteFavorite: (campsiteId) => deleteFavorite(campsiteId),
+};
+
 class Favorites extends Component {
   static navigationOptions = {
     title: "My Favorites",
   };
 
   render() {
+    const { navigate } = this.props.navigation;
+    const renderFavoriteItem = ({ item }) => {
+      return (
+        <SwipeRow rightOpenValue={-100} style={styles.swipeRow}>
+          <View style={styles.deleteView}>
+            <TouchableOpacity
+              style={styles.deleteTouchable}
+              onPress={() => this.props.deleteFavorite(item.id)}
+            >
+              <Text style={styles.deleteText}>Delete</Text>
+            </TouchableOpacity>
+          </View>
 
-    const {navigate} =this.props.navigation
-    const renderFavoriteItem =({item}) => {
-        return(
+          <View>
             <ListItem
-            title={item.name}
-            subtitle={item.description}
-            leftAvatar={{source: {uri:baseUrl + item.image}}}
-            onPress={()=>navigate('CampsiteInfo',{campsiteId: item.id})}
+              title={item.name}
+              subtitle={item.description}
+              leftAvatar={{ source: { uri: baseUrl + item.image } }}
+              onPress={() => navigate("CampsiteInfo", { campsiteId: item.id })}
             />
-
-        )
-    }
+          </View>
+        </SwipeRow>
+      );
+    };
     if (this.props.campsites.isLoading) {
       return <Loading />;
     }
@@ -53,4 +71,24 @@ class Favorites extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Favorites);
+const styles = StyleSheet.create({
+  deleteView: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flex: 1,
+  },
+  deleteTouchable: {
+    backgroundColor: "red",
+    height: "100%",
+    justifyContent: "center",
+  },
+  deleteText: {
+    color: "white",
+    fontWeight: "700",
+    textAlign: "center",
+    fontSize: 16,
+    width: 100,
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
