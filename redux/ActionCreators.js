@@ -179,12 +179,20 @@ export const postComment = (campsiteId, rating, author, text) => (
     rating,
     author,
     text,
-    
   };
   newComment.date = new Date().toISOString();
   setTimeout(() => {
     dispatch(addComment(newComment));
   }, 2000);
+
+  fetch(baseUrl + "comments", {
+    method: "POST",
+    body: JSON.stringify(newComment),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  
 };
 
 export const addComment = (comment) => ({

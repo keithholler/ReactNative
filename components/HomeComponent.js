@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, Animated } from "react-native";
+import { View, Text, Animated,AppState } from "react-native";
 import { Card } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
+import { withNavigation } from "react-navigation";
+
 
 const mapStateToProps = (state) => {
   return {
@@ -41,7 +43,9 @@ class Home extends Component {
     super(props);
     this.state = {
       scaleValue: new Animated.Value(0),
+      appState: AppState.currentState,
     };
+  
   }
 
   animate() {
@@ -49,21 +53,26 @@ class Home extends Component {
       toValue: 1,
       duration: 1500,
       useNativeDriver: true,
-    }).start();
+    }).start()
+    ;
   }
 
   componentDidMount() {
-    this.animate();
+    this.animate()
   }
+
   static navigationOptions = {
     title: "Home",
   };
 
   render() {
+    
     return (
       <Animated.ScrollView
         style={{ transform: [{ scale: this.state.scaleValue }] }}
       >
+       
+     
         <RenderItem
           item={
             this.props.campsites.campsites.filter(
@@ -96,4 +105,6 @@ class Home extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Home);
+
+
+export default connect(mapStateToProps)(withNavigation(Home));
