@@ -5,7 +5,7 @@ import CampsiteInfo from "./CampsiteInfoComponent";
 import About from "./AboutComponent";
 import Favorites from "./FavoritesComponent";
 import Contact from "./ContactComponent";
-import Login from './LoginComponent';
+import Login from "./LoginComponent";
 import {
   View,
   Platform,
@@ -17,7 +17,11 @@ import {
 } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
-import { createAppContainer,StackActions, NavigationActions } from "react-navigation";
+import {
+  createAppContainer,
+  StackActions,
+  NavigationActions,
+} from "react-navigation";
 import { Icon } from "react-native-elements";
 import SafeAreaView from "react-native-safe-area-view";
 import { connect } from "react-redux";
@@ -245,7 +249,12 @@ const MainNavigator = createDrawerNavigator(
       screen: LoginNavigator,
       navigationOptions: {
         drawerIcon: ({ tintColor }) => (
-          <Icon name="sign-in" type="font-awesome" size={24} color={tintColor} />
+          <Icon
+            name="sign-in"
+            type="font-awesome"
+            size={24}
+            color={tintColor}
+          />
         ),
       },
     },
@@ -313,15 +322,12 @@ const MainNavigator = createDrawerNavigator(
     },
   },
   {
-    
     unmountInactiveRoutes: true,
-    initialRouteName:'Home',
+    initialRouteName: "Home",
     drawerBackgroundColor: "#CEC8FF",
     contentComponent: CustomDrawerContentComponent,
   }
 );
-
-
 
 const AppNavigator = createAppContainer(MainNavigator);
 
